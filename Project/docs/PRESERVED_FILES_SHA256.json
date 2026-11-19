@@ -1,0 +1,70 @@
+[
+  {
+    "path": "Project/data/feeders.csv",
+    "sha256": "df65120efbfd00de3ed0107801fd365420e99c4366b1d867ee15d96dc417ce93"
+  },
+  {
+    "path": "Project/data/hourly_demand.csv",
+    "sha256": "b8df2ca7428183ea5190974cd9f732aca800c6f9fc7089988efe976fdc2a2168"
+  },
+  {
+    "path": "Project/data/hourly_supply.csv",
+    "sha256": "7aed8730fd9f3b4807e71651d52d9bb2da03b54fd395c116aef0a3ae7ef66df5"
+  },
+  {
+    "path": "Project/data/metadata/dataset_summary.txt",
+    "sha256": "6e1966516a81f5931b60bdcace82bcf3d37dd8a80a07beaa77ab91172ca6c1a2"
+  },
+  {
+    "path": "Project/data/weather_time.csv",
+    "sha256": "b63bd8b45b6ad243e6c91f07dbb4e18c24c3f45e59c97393478c82cf2dafbbf2"
+  },
+  {
+    "path": "Project/outputs/charts/actual_vs_predicted_demand.png",
+    "sha256": "006c76e9df77fc18aad266d8bd81afe23cb9b97ff2fe78bab11e02ed891cdcd8"
+  },
+  {
+    "path": "Project/outputs/charts/csp_vs_hill_climbing_runtime.png",
+    "sha256": "c913ba6a12d90e7ce2aa12fbd70a32dc804ba392ffd4a50aaa888cbbb5bbcbeb"
+  },
+  {
+    "path": "Project/outputs/charts/csp_vs_hill_climbing_shortage.png",
+    "sha256": "d0af2f15ada353bdba743fc4522ef4457e932bc1869eb5d5c90e82157539b95b"
+  },
+  {
+    "path": "Project/outputs/charts/outage_hours_by_area.png",
+    "sha256": "4aa7b394fc5d26b71080758dc02a749f2c1e13fb5441bac9f0fbf8bc6036c081"
+  },
+  {
+    "path": "Project/outputs/metrics/experiment_summary.txt",
+    "sha256": "6a0408e589a7e97deec23b238eec97c163e1b193800b545f5b2b163646a6a333"
+  },
+  {
+    "path": "Project/outputs/metrics/regression_metrics.csv",
+    "sha256": "7f66276a491b34b0ffc67f0bcf41cf5636b96cd370ead32a8bb5844a05b4ec62"
+  },
+  {
+    "path": "Project/outputs/metrics/scheduling_metrics.csv",
+    "sha256": "a1ec6950f5490d43332f0cdf6fe66a65c794b55155873952c319dc5577855771"
+  },
+  {
+    "path": "Project/outputs/metrics/scheduling_summary.csv",
+    "sha256": "4d54c842afc8d538c12a52b5222848483b52a9f7290143de89b145fd95a9a2c6"
+  },
+  {
+    "path": "Project/outputs/predictions/demand_predictions.csv",
+    "sha256": "a9bb7ec16460ab31bbad04907f06995c267fd4d78447dc86af38bc137b71cc0b"
+  },
+  {
+    "path": "Project/outputs/schedules/csp_schedules.csv",
+    "sha256": "55b115f6f1811ab4e77997e4b0cba8fd235e60ddfb7f76ff9b891e1ebcdc9d96"
+  },
+  {
+    "path": "Project/outputs/schedules/hill_climbing_schedules.csv",
+    "sha256": "2eb34374a2e378389ddacf066454b5102578bb6f8bdd3a59fa9a745c3ebcd101"
+  },
+  {
+    "path": "Project/outputs/schedules/infeasible_scenarios.csv",
+    "sha256": "55531d91e40637249734fe8f129a85f47d8516fe343086a1cfb3f3561885e24f"
+  }
+]

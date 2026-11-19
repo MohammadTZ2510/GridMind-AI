@@ -1,0 +1,2 @@
+scenario_id,status,cause,reason,csp_nodes,csp_runtime_s,total_required_shed_mwh,hill_climbing
+S002,INFEASIBLE,supply,"Hour 13: forecast demand exceeds usable supply by 42.04 MW, but only 38.69 MW of demand may be switched off (hospital/protected/no-outage feeders must stay ON). Supply is too low.",0,0.000298,224.838,not run (no valid starting schedule)

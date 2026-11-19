@@ -1,0 +1,7 @@
+{
+  "name": "gridmind-ai-local",
+  "private": true,
+  "scripts": {
+    "dev": "python web_app/preview_server.py"
+  }
+}

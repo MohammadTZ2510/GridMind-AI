@@ -1,0 +1,195 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>{{ overview.scenario_id }} — Scenario Analysis</h1>
+<p>Complete analysis of this simulated electricity scenario.</p>
+
+<!-- BASIC SCENARIO INFORMATION -->
+<h2 style="margin-top: 30px">Scenario Overview</h2>
+
+<div class="cards">
+  <div class="card">
+    <h3>{{ overview.feeder_count }}</h3>
+    <p>Total Feeders</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.area_count }}</h3>
+    <p>Total Areas</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.hour_count }}</h3>
+    <p>Hourly Slots</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.average_temperature }}°C</h3>
+    <p>Average Temperature</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.average_humidity }}%</h3>
+    <p>Average Humidity</p>
+  </div>
+</div>
+
+<!-- ELECTRICITY ANALYSIS -->
+<h2 style="margin-top: 40px">Electricity Analysis</h2>
+
+<div class="cards">
+  <div class="card">
+    <h3>{{ overview.total_actual_demand_mwh }} MWh</h3>
+    <p>Total Actual Demand</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.total_available_supply_mwh }} MWh</h3>
+    <p>Total Available Supply</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.total_usable_supply_mwh }} MWh</h3>
+    <p>Total Usable Supply</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color: #ff5b68">{{ overview.total_shortage_mwh }} MWh</h3>
+    <p>Total Shortage</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.shortage_hours }}</h3>
+    <p>Hours With Shortage</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.peak_shortage_mw }} MW</h3>
+    <p>Peak Hourly Shortage</p>
+  </div>
+</div>
+
+<!-- WEATHER ANALYSIS -->
+<h2 style="margin-top: 40px">Weather & Environmental Analysis</h2>
+
+<div class="cards">
+  <div class="card">
+    <h3>{{ overview.average_temperature }}°C</h3>
+    <p>Average Temperature</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.maximum_temperature }}°C</h3>
+    <p>Maximum Temperature</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.minimum_temperature }}°C</h3>
+    <p>Minimum Temperature</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ overview.average_humidity }}%</h3>
+    <p>Average Humidity</p>
+  </div>
+</div>
+
+<!-- HOURLY EXPLORER -->
+<h2 style="margin-top: 40px">Explore Individual Hours</h2>
+
+<p>
+  Select any hour to inspect demand, supply, weather and all 10 feeder
+  decisions.
+</p>
+
+<div class="scenario-grid">
+  {% for hour in range(24) %}
+
+  <a
+    class="scenario-card"
+    href="{{ url_for('hourly_analysis',
+       scenario_id=overview.scenario_id,
+       hour=hour) }}"
+  >
+    <span>TIME SLOT</span>
+
+    <h2>{{ "%02d:00"|format(hour) }}</h2>
+
+    <p>Inspect Hour →</p>
+  </a>
+
+  {% endfor %}
+</div>
+
+<!-- ALGORITHM PERFORMANCE -->
+<h2 style="margin-top: 40px">Algorithm Performance</h2>
+
+<div class="cards">
+  {% for metric in overview.metrics %}
+
+  <div class="card">
+    <h3>{{ metric.method }}</h3>
+
+    <p>Status: {{ metric.status }}</p>
+
+    <p>Feasibility: {{ "Yes" if metric.feasible else "No" }}</p>
+
+    <p>Runtime: {{ metric.runtime_s }} seconds</p>
+
+    <p>Objective Score: {{ metric.objective_score }}</p>
+
+    <p>Total Outage Hours: {{ metric.total_outage_hours }}</p>
+
+    <p>Actual Unmet Demand: {{ metric.actual_unmet_mwh }} MWh</p>
+
+    <p>Network Shortage: {{ metric.network_shortage_mwh }} MWh</p>
+
+    <p>Area Outage Imbalance: {{ metric.area_outage_imbalance }}</p>
+
+    <p>Supply Overload Hours: {{ metric.supply_overload_hours }}</p>
+
+    <p>Constraint Violations: {{ metric.hard_constraint_violations }}</p>
+
+    {% if metric.nodes is not none %}
+    <p>CSP Nodes Explored: {{ metric.nodes }}</p>
+    {% endif %} {% if metric.iterations is not none %}
+    <p>Hill Climbing Iterations: {{ metric.iterations }}</p>
+    {% endif %}
+  </div>
+
+  {% endfor %}
+</div>
+
+<!-- WEATHER HOURLY TABLE -->
+<h2 style="margin-top: 40px">Hourly Weather Records</h2>
+
+<div style="overflow-x: auto">
+  <table style="width: 100%; text-align: left; border-spacing: 0 8px">
+    <tr>
+      <th>Hour</th>
+      <th>Day</th>
+      <th>Season</th>
+      <th>Temperature</th>
+      <th>Humidity</th>
+      <th>Peak Hour</th>
+      <th>Morning Peak</th>
+      <th>Evening Peak</th>
+    </tr>
+
+    {% for w in overview.weather_records %}
+
+    <tr>
+      <td>{{ w.time_label }}</td>
+      <td>{{ w.day_of_week }}</td>
+      <td>{{ w.season }}</td>
+      <td>{{ w.temperature_c }}°C</td>
+      <td>{{ w.humidity_pct }}%</td>
+      <td>{{ "Yes" if w.is_peak_hour else "No" }}</td>
+      <td>{{ "Yes" if w.is_morning_peak else "No" }}</td>
+      <td>{{ "Yes" if w.is_evening_peak else "No" }}</td>
+    </tr>
+
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}

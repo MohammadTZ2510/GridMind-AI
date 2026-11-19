@@ -1,0 +1,236 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>{{ details.scenario_id }} — Hour {{ "%02d:00"|format(details.hour) }}</h1>
+
+<p>Detailed hourly electricity, weather and feeder analysis.</p>
+
+<!-- NAVIGATION -->
+<div style="margin: 20px 0">
+  <a href="{{ url_for('scenario_detail', scenario_id=details.scenario_id) }}">
+    ← Back to Scenario
+  </a>
+</div>
+
+<!-- ALGORITHM SELECTOR -->
+<h2 style="margin-top: 30px">Scheduling Algorithm</h2>
+
+<div class="card">
+  <a href="?method=CSP" class="btn" style="margin-right: 10px">
+    CSP Backtracking
+  </a>
+
+  <a href="?method=HC" class="btn"> Hill Climbing </a>
+
+  <p style="margin-top: 15px">
+    Currently displaying:
+    <strong>{{ method }}</strong>
+  </p>
+</div>
+
+<!-- ELECTRICITY SUMMARY -->
+<h2 style="margin-top: 35px">Electricity Supply & Demand</h2>
+
+<div class="cards">
+  <div class="card">
+    <h3>
+      {{ details.feeders | sum(attribute='actual_demand_mw') | round(2) }} MW
+    </h3>
+    <p>Total Actual Demand</p>
+  </div>
+
+  <div class="card">
+    <h3>
+      {{ details.feeders | sum(attribute='regression_prediction_mw') | round(2)
+      }} MW
+    </h3>
+    <p>Total Predicted Demand</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ details.supply.available_supply_mw }} MW</h3>
+    <p>Available Supply</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ details.supply.usable_supply_mw }} MW</h3>
+    <p>Usable Supply</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color: #ff5b68">{{ details.supply.shortage_mw }} MW</h3>
+    <p>Forecast Supply Shortage</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ details.supply.reserve_mw }} MW</h3>
+    <p>Reserved Supply</p>
+  </div>
+</div>
+
+<!-- WEATHER -->
+<h2 style="margin-top: 40px">Weather & Environmental Conditions</h2>
+
+<div class="cards">
+  <div class="card">
+    <h3>{{ details.weather.temperature_c }}°C</h3>
+    <p>Temperature</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ details.weather.humidity_pct }}%</h3>
+    <p>Humidity</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ details.weather.season }}</h3>
+    <p>Season</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ details.weather.day_type }}</h3>
+    <p>Day Type</p>
+  </div>
+</div>
+
+<div class="card" style="margin-top: 15px">
+  <p>Day of Week: {{ details.weather.day_of_week }}</p>
+
+  <p>Weekend: {{ "Yes" if details.weather.is_weekend else "No" }}</p>
+
+  <p>Peak Hour: {{ "Yes" if details.weather.is_peak_hour else "No" }}</p>
+
+  <p>Morning Peak: {{ "Yes" if details.weather.is_morning_peak else "No" }}</p>
+
+  <p>Evening Peak: {{ "Yes" if details.weather.is_evening_peak else "No" }}</p>
+</div>
+
+<!-- FEEDER STATUS -->
+<h2 style="margin-top: 40px">Individual Feeder Analysis</h2>
+
+<p>Total Feeders: {{ details.feeders | length }}</p>
+
+{% set ns = namespace(on=0, off=0, unknown=0) %} {% for f in details.feeders %}
+{% if f.schedule_decision == 'ON' %} {% set ns.on = ns.on + 1 %} {% elif
+f.schedule_decision == 'OFF' %} {% set ns.off = ns.off + 1 %} {% else %} {% set
+ns.unknown = ns.unknown + 1 %} {% endif %} {% endfor %}
+
+<div class="cards">
+  <div class="card">
+    <h3 style="color: #39d98a">{{ ns.on }}</h3>
+    <p>Feeders ON</p>
+  </div>
+
+  <div class="card">
+    <h3 style="color: #ff5b68">{{ ns.off }}</h3>
+    <p>Feeders OFF</p>
+  </div>
+
+  <div class="card">
+    <h3>{{ ns.unknown }}</h3>
+    <p>Unknown Status</p>
+  </div>
+</div>
+
+<!-- FEEDER TABLE -->
+<div style="overflow-x: auto; margin-top: 25px">
+  <table style="width: 100%; text-align: left; border-spacing: 0 8px">
+    <tr>
+      <th>Feeder</th>
+      <th>Area</th>
+      <th>Actual MW</th>
+      <th>Predicted MW</th>
+      <th>Previous MW</th>
+      <th>Status</th>
+      <th>Served MW</th>
+      <th>Unmet MW</th>
+      <th>Priority</th>
+      <th>Inspect</th>
+    </tr>
+
+    {% for f in details.feeders %}
+
+    <tr>
+      <td>
+        <strong>{{ f.feeder_id }}</strong>
+      </td>
+
+      <td>{{ f.area }}</td>
+
+      <td>{{ f.actual_demand_mw }}</td>
+
+      <td>{{ f.regression_prediction_mw }}</td>
+
+      <td>{{ f.previous_hour_demand_mw }}</td>
+
+      <td>
+        {% if f.schedule_decision == 'ON' %}
+        <span style="color: #39d98a; font-weight: bold">ON</span>
+        {% elif f.schedule_decision == 'OFF' %}
+        <span style="color: #ff5b68; font-weight: bold">OFF</span>
+        {% else %}
+        <span style="color: #f0b44d">N/A</span>
+        {% endif %}
+      </td>
+
+      <td>{{ f.served_demand_mw }}</td>
+
+      <td>{{ f.unmet_demand_mw }}</td>
+
+      <td>{{ f.priority }}</td>
+
+      <td>
+        <a
+          href="{{ url_for('feeder_detail',
+                scenario_id=details.scenario_id,
+                hour=details.hour,
+                feeder_id=f.feeder_id,
+                method=method) }}"
+        >
+          Inspect →
+        </a>
+      </td>
+    </tr>
+
+    {% endfor %}
+  </table>
+</div>
+
+<!-- AREA-WISE ANALYSIS -->
+<h2 style="margin-top: 40px">Area-wise Feeder Distribution</h2>
+
+{% set areas = details.feeders | map(attribute='area') | unique | list %}
+
+<div class="scenario-grid">
+  {% for area in areas %}
+
+  <div class="card">
+    <h3>{{ area }}</h3>
+
+    {% for f in details.feeders if f.area == area %}
+
+    <p style="margin-top: 12px">
+      <strong>{{ f.feeder_id }}</strong>
+
+      {% if f.schedule_decision == 'ON' %}
+      <span style="color: #39d98a"> ● ON</span>
+      {% elif f.schedule_decision == 'OFF' %}
+      <span style="color: #ff5b68"> ● OFF</span>
+      {% else %}
+      <span>N/A</span>
+      {% endif %}
+    </p>
+
+    {% endfor %}
+  </div>
+
+  {% endfor %}
+</div>
+
+<!-- BACK NAVIGATION -->
+<div style="margin-top: 40px">
+  <a href="{{ url_for('scenario_detail', scenario_id=details.scenario_id) }}">
+    ← Back to {{ details.scenario_id }}
+  </a>
+</div>
+
+{% endblock %}

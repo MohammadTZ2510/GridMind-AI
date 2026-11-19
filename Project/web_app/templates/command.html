@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101011"><meta name="description" content="GRIDMIND AI — Electricity demand prediction, constraint-safe scheduling and transparent grid analytics.">
+<title>GRIDMIND AI | Electricity Grid Command Center</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill='%23dc143c' d='M22 1 5 24h13l-2 15 19-25H22z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+<script>window.GRIDMIND_INITIAL={{ {'page':page|default('command'),'scenario':initial_scenario|default('S001'),'hour':initial_hour|default(13),'feeder':initial_feeder|default('F001'),'method':initial_method|default('CSP')}|tojson }};</script>
+<script defer src="{{ url_for('static',filename='vendor/three.min.js') }}"></script>
+<script defer src="{{ url_for('static',filename='vendor/OrbitControls.js') }}"></script>
+<script defer src="{{ url_for('static',filename='vendor/gsap.min.js') }}"></script>
+<script defer src="{{ url_for('static',filename='vendor/plotly.min.js') }}"></script>
+<script defer src="{{ url_for('static',filename='js/grid3d.js') }}"></script>
+<script defer src="{{ url_for('static',filename='js/trace_player.js') }}"></script>
+<script defer src="{{ url_for('static',filename='js/storm_audio.js',v='window-rain-4') }}"></script>
+<script defer src="{{ url_for('static',filename='js/storm.js',v='fixed-strikes-5500') }}"></script>
+<script defer src="{{ url_for('static',filename='js/main.js') }}"></script>
+</head>
+<body>
+<canvas id="storm-background" aria-hidden="true"></canvas>
+<a class="skip" href="#workspace">Skip to workspace</a>
+<aside class="sidebar">
+<a class="brand" href="/" data-page="command"><span class="brand-symbol">ϟ</span><span>GRIDMIND<span class="brand-ai"> AI</span><small>GRID INTELLIGENCE PLATFORM</small></span></a>
+<div class="nav-label">WORKSPACE</div>
+<nav aria-label="Main navigation">
+<a href="/" data-page="command"><i>◈</i><span>Command center</span></a>
+<a href="/scenarios" data-page="scenarios"><i>▦</i><span>Scenario explorer</span></a>
+<a href="/demand" data-page="demand"><i>⌁</i><span>Demand intelligence</span></a>
+<a href="/weather" data-page="weather"><i>☼</i><span>Weather & environment</span></a>
+<a href="/fairness" data-page="fairness"><i>⚖</i><span>Fairness analytics</span></a>
+<a href="/algorithm-lab" data-page="algorithm-lab"><i>⌘</i><span>Algorithm lab</span></a>
+<a href="/data" data-page="data"><i>▤</i><span>Data explorer</span></a>
+</nav>
+<div class="sidebar-foot"><span class="status-dot"></span> SIMULATION ENVIRONMENT<p>AL-2002 · FAST-NUCES Karachi<br>Fall 2026 · BDS-5A</p><div class="version">DECISION SUPPORT <span>v2.0</span></div></div>
+</aside>
+<div class="app-shell">
+<header class="topbar"><div class="breadcrumb">WORKSPACE <span>/</span> <b id="breadcrumb">COMMAND CENTER</b></div><div class="topbar-right"><button id="storm-toggle" class="storm-toggle" aria-label="Toggle decorative storm animation" aria-pressed="true">ϟ Storm effects ON</button><div class="storm-audio-controls"><button id="storm-sound" class="storm-toggle" aria-label="Toggle rain and thunder sound" aria-pressed="false">Sound OFF</button><input id="storm-volume" type="range" min="0" max="70" value="25" aria-label="Storm sound volume"><span id="storm-volume-label">25%</span></div><span class="sim-pill"><span class="status-dot"></span> SIMULATED DATA</span><span class="avatar" title="Academic simulation">GM</span></div></header>
+<main id="workspace" tabindex="-1">
+<div class="page-heading"><div><div class="eyebrow" id="eyebrow">INTELLIGENT ELECTRICITY DISTRIBUTION</div><h1 id="page-title">Grid command center<span class="title-dot">.</span></h1><p id="page-description">One network. Every decision, in perspective.</p></div><div class="context-badge"><span class="status-dot"></span><span id="context-status">Connecting to datasets</span></div></div>
+<section class="control-bar" aria-label="Simulation controls">
+<label>SCENARIO<select id="scenario-select" aria-label="Select scenario"><option>S001</option></select></label>
+<label>TIME SLOT<select id="hour-select" aria-label="Select hour"></select></label>
+<div class="method-control"><span>SCHEDULING ALGORITHM</span><div class="segmented"><button data-method="CSP" class="active">CSP Backtracking</button><button data-method="HC">Hill Climbing</button></div></div>
+<label class="compare-label"><input id="compare-toggle" type="checkbox"><span>Compare decisions</span></label>
+<button class="icon-button" id="refresh" title="Refresh dataset results" aria-label="Refresh dataset results">↻</button>
+</section>
+<div id="error-banner" class="notice danger" role="alert" hidden></div>
+<div id="scenario-warning" class="notice warning" hidden></div>
+<div id="loading" class="loading-bar" role="status" hidden>Loading scenario data…</div>
+<div id="view"></div>
+<footer class="footer"><span>GRIDMIND AI <b>·</b> Intelligent Electricity Grid Command Center</span><span>Simulated data only · No connection to a real electricity grid</span></footer>
+</main>
+</div>
+<div id="toast" role="status" hidden></div>
+<noscript><div class="no-script">JavaScript is required for interactive grid analysis. Run the original Python pipeline with <code>python run_project.py</code> to inspect CSV and chart outputs.</div></noscript>
+</body>
+</html>

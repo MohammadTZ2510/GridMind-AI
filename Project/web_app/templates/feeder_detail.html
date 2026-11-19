@@ -1,0 +1,62 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{ feeder.feeder_id }} — Feeder Inspector</h1>
+
+<p>{{ feeder.feeder_name }}</p>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>{{ feeder.actual_demand_mw }} MW</h3>
+        <p>Actual Demand</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ feeder.regression_prediction_mw }} MW</h3>
+        <p>ML Predicted Demand</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ feeder.schedule_decision or 'N/A' }}</h3>
+        <p>Scheduling Decision</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ feeder.unmet_demand_mw }} MW</h3>
+        <p>Unmet Demand</p>
+    </div>
+
+</div>
+
+<h2 style="margin-top:30px;">Feeder Information</h2>
+
+<div class="card">
+    <p>Scenario: {{ scenario_id }}</p>
+    <p>Hour: {{ "%02d:00"|format(hour) }}</p>
+    <p>Area: {{ feeder.area }}</p>
+    <p>Priority: {{ feeder.priority }}</p>
+    <p>Critical Feeder: {{ feeder.is_critical }}</p>
+    <p>Critical Type: {{ feeder.critical_type }}</p>
+    <p>Maximum Total Outage Hours: {{ feeder.max_total_outage_hours }}</p>
+    <p>Maximum Consecutive Outage Hours: {{ feeder.max_consecutive_outage_hours }}</p>
+    <p>Protected Hours: {{ feeder.protected_hours }}</p>
+    <p>Previous Hour Demand: {{ feeder.previous_hour_demand_mw }} MW</p>
+    <p>Humidity: {{ feeder.humidity_pct }}%</p>
+    <p>Temperature: {{ feeder.temperature_c }}°C</p>
+    <p>CV Fold: {{ feeder.cv_fold }}</p>
+    <p>Scheduling Method: {{ method }}</p>
+</div>
+
+<p style="margin-top:25px;">
+    <a href="{{ url_for('hourly_analysis',
+       scenario_id=scenario_id,
+       hour=hour,
+       method=method) }}">
+       ← Back to Hourly Analysis
+    </a>
+</p>
+
+{% endblock %}

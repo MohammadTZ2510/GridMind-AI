@@ -1,0 +1,41 @@
+test_1_dataset_loading_and_row_counts (test_project.TestData.test_1_dataset_loading_and_row_counts) ... ok
+test_2_feeder_count (test_project.TestData.test_2_feeder_count) ... ok
+test_3_scenario_count (test_project.TestData.test_3_scenario_count) ... ok
+test_protected_hours_parser (test_project.TestData.test_protected_hours_parser) ... ok
+test_run_trials_and_compare_methods (test_project.TestEvaluation.test_run_trials_and_compare_methods) ... ok
+test_10_predictions_non_negative_and_within_capacity (test_project.TestForecasting.test_10_predictions_non_negative_and_within_capacity) ... ok
+test_no_scenario_leakage_and_target_not_a_feature (test_project.TestForecasting.test_no_scenario_leakage_and_target_not_a_feature) ... ok
+test_regression_beats_baselines (test_project.TestForecasting.test_regression_beats_baselines) ... ok
+test_4_hospital_protection (test_project.TestHardConstraints.test_4_hospital_protection) ... ok
+test_5_protected_hours (test_project.TestHardConstraints.test_5_protected_hours) ... ok
+test_6_max_total_outage_hours (test_project.TestHardConstraints.test_6_max_total_outage_hours) ... ok
+test_7_max_consecutive_outage_hours (test_project.TestHardConstraints.test_7_max_consecutive_outage_hours) ... ok
+test_8_supply_capacity (test_project.TestHardConstraints.test_8_supply_capacity) ... ok
+test_9_binary_values_only (test_project.TestHardConstraints.test_9_binary_values_only) ... ok
+test_baseline_schedule_is_valid (test_project.TestHardConstraints.test_baseline_schedule_is_valid) ... ok
+test_14_reproducibility_with_seed_42 (test_project.TestReproducibility.test_14_reproducibility_with_seed_42) ... ok
+test_11_schedule_validity_csp_and_hill_climbing (test_project.TestSchedulers.test_11_schedule_validity_csp_and_hill_climbing) ... ok
+test_12_shortage_calculation (test_project.TestSchedulers.test_12_shortage_calculation) ... ok
+test_13_hill_climbing_never_accepts_invalid_schedule (test_project.TestSchedulers.test_13_hill_climbing_never_accepts_invalid_schedule) ... ok
+test_fairness_metric_and_area_aggregation (test_project.TestSchedulers.test_fairness_metric_and_area_aggregation) ... ok
+test_hill_climbing_rejects_invalid_start (test_project.TestSchedulers.test_hill_climbing_rejects_invalid_start) ... ok
+test_hill_climbing_score_decreases_with_each_accepted_move (test_project.TestSchedulers.test_hill_climbing_score_decreases_with_each_accepted_move) ... ok
+test_infeasible_scenario_is_reported_not_faked (test_project.TestSchedulers.test_infeasible_scenario_is_reported_not_faked) ... ok
+test_hill_climbing_records_all_five_distinct_start_states (test_trace_replay.TestTraceReplay.test_hill_climbing_records_all_five_distinct_start_states) ... ok
+test_infeasible_run_has_no_fabricated_schedule (test_trace_replay.TestTraceReplay.test_infeasible_run_has_no_fabricated_schedule) ... ok
+test_real_csp_and_hc_events_reconstruct_returned_schedules (test_trace_replay.TestTraceReplay.test_real_csp_and_hc_events_reconstruct_returned_schedules) ... ok
+test_01_bootstrap_and_datasets (test_web_app.TestWebApplication.test_01_bootstrap_and_datasets) ... ok
+test_02_all_2400_scenario_hour_method_contexts (test_web_app.TestWebApplication.test_02_all_2400_scenario_hour_method_contexts) ... ok
+test_03_page_routes (test_web_app.TestWebApplication.test_03_page_routes) ... ok
+test_04_dataset_downloads_search_sort_and_pagination (test_web_app.TestWebApplication.test_04_dataset_downloads_search_sort_and_pagination) ... ok
+test_05_missing_schedule_data_is_unknown_not_off (test_web_app.TestWebApplication.test_05_missing_schedule_data_is_unknown_not_off) ... ok
+test_06_optional_observers_preserve_algorithm_outputs (test_web_app.TestWebApplication.test_06_optional_observers_preserve_algorithm_outputs) ... ok
+test_07_live_lab_records_real_events (test_web_app.TestWebApplication.test_07_live_lab_records_real_events) ... ok
+test_08_area_fairness_forecast_metrics_and_comparison (test_web_app.TestWebApplication.test_08_area_fairness_forecast_metrics_and_comparison) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 47.640s
+
+OK
+
+GRIDMIND verified 2400 scenario-hour-method API contexts in 29.06s; input/output hashes unchanged.

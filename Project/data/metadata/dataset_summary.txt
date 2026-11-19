@@ -1,0 +1,142 @@
+======================================================================
+ DATASET SUMMARY - AI-Based Electricity Demand Prediction and Fair Load-Shedding Scheduler
+======================================================================
+
+*** ALL DATA IN THIS PROJECT IS SIMULATED DATA. ***
+It is NOT actual measurement data from K-Electric or any other electricity
+company and is NOT connected to a real electricity grid. Educational use only.
+
+----------------------------------------------------------------------
+ CONFIGURATION
+----------------------------------------------------------------------
+Generated on          : 2026-11-16 00:40:53
+Random seed           : 42
+Number of scenarios   : 50
+Number of areas       : 5
+Number of feeders     : 10 (2 per area)
+Hours per scenario    : 24 (time slots 0-23)
+Power unit            : MW
+Season mix            : Summer=20, Winter=15, Monsoon=15
+Day-type mix          : Weekday=36, Weekend=14
+
+----------------------------------------------------------------------
+ ROW COUNTS
+----------------------------------------------------------------------
+feeders.csv           :     10 rows
+hourly_demand.csv     : 12,000 rows
+hourly_supply.csv     :  1,200 rows
+weather_time.csv      :  1,200 rows
+
+----------------------------------------------------------------------
+ COLUMNS
+----------------------------------------------------------------------
+feeders.csv       : feeder_id, area, feeder_name, feeder_capacity_mw, priority, priority_weight, is_critical, critical_type, max_total_outage_hours, max_consecutive_outage_hours, protected_hours, base_demand_mw, demand_variation_pct
+hourly_demand.csv : scenario_id, hour, time_label, feeder_id, area, day_type, season, temperature_c, humidity_pct, previous_hour_demand_mw, actual_demand_mw, demand_category, feeder_capacity_mw
+hourly_supply.csv : scenario_id, hour, time_label, available_supply_mw, reserve_mw, usable_supply_mw, total_demand_mw, shortage_mw, supply_status
+weather_time.csv  : scenario_id, hour, time_label, day_type, day_of_week, season, temperature_c, humidity_pct, is_weekend, is_peak_hour, is_morning_peak, is_evening_peak
+
+----------------------------------------------------------------------
+ DEMAND STATISTICS (feeder-level actual_demand_mw, MW)
+----------------------------------------------------------------------
+Minimum : 3.395
+Maximum : 29.400
+Mean    : 13.305
+Demand category counts: Low=3511, Medium=7018, High=1419, Peak=52
+
+----------------------------------------------------------------------
+ SUPPLY STATISTICS (network available_supply_mw, MW)
+----------------------------------------------------------------------
+Minimum : 57.853
+Maximum : 214.073
+Mean    : 134.842
+Total shortage hours (scenario-hours with shortage_mw > 0) : 571
+Scenarios containing at least one shortage hour            : 47 of 50
+Largest hourly shortage (MW)                               : 52.514
+Sufficient scenario-hours : 629
+Tight scenario-hours      : 258
+Shortage scenario-hours   : 313
+(Tight = 0 < shortage <= 10% of total demand; Shortage = more than 10%)
+
+----------------------------------------------------------------------
+ FEEDER INFORMATION
+----------------------------------------------------------------------
+Critical feeders : 1 (F001 - Hospital, never scheduled for outage)
+Note: protected_hours is an empty string for feeders without protected hours. When
+      loading feeders.csv with pandas, use keep_default_na=False (or dtype=str for
+      that column) so empty strings are not converted to NaN.
+
+----------------------------------------------------------------------
+ VALIDATION RESULTS
+----------------------------------------------------------------------
+[PASS] feeders.csv has exactly 10 rows
+[PASS] feeder_id values are unique
+[PASS] exactly 5 unique areas
+[PASS] each area has exactly 2 feeders
+[PASS] exactly one hospital feeder
+[PASS] F001 is the critical hospital feeder
+[PASS] only F001 is critical
+[PASS] F001 has the highest priority (5) and no other feeder has 5
+[PASS] F001 has zero permitted outage hours
+[PASS] priority values are within 1-5
+[PASS] priority_weight values are positive
+[PASS] base demand is below feeder capacity
+[PASS] max consecutive outage <= max total outage
+[PASS] critical_type values are valid
+[PASS] protected_hours are well-formatted, valid and leave room for allowed outages
+[PASS] hourly_demand.csv has exactly 12,000 rows
+[PASS] hourly_supply.csv has exactly 1,200 rows
+[PASS] weather_time.csv has exactly 1,200 rows
+[PASS] no duplicate scenario-hour-feeder rows in demand
+[PASS] no duplicate scenario-hour rows in supply
+[PASS] no duplicate scenario-hour rows in weather
+[PASS] feeders: no missing values
+[PASS] hourly_demand: no missing values
+[PASS] hourly_supply: no missing values
+[PASS] weather_time: no missing values
+[PASS] hourly_demand: scenario ids are exactly S001-S050
+[PASS] hourly_demand: every scenario has exactly 24 hours (0-23)
+[PASS] hourly_supply: scenario ids are exactly S001-S050
+[PASS] hourly_supply: every scenario has exactly 24 hours (0-23)
+[PASS] weather_time: scenario ids are exactly S001-S050
+[PASS] weather_time: every scenario has exactly 24 hours (0-23)
+[PASS] each scenario-hour has exactly 10 feeder demand records
+[PASS] each scenario-hour has exactly one supply record
+[PASS] each scenario-hour has exactly one weather/time record
+[PASS] every demand feeder_id exists in feeders.csv
+[PASS] demand area names match feeder metadata
+[PASS] demand feeder capacity matches feeders.csv
+[PASS] demand temperature matches weather_time.csv
+[PASS] demand humidity matches weather_time.csv
+[PASS] demand season matches weather_time.csv
+[PASS] demand day_type matches weather_time.csv
+[PASS] all actual demand values are positive
+[PASS] no actual demand exceeds feeder capacity
+[PASS] previous-hour demand is positive and within capacity
+[PASS] previous_hour_demand_mw equals the same feeder's previous-hour demand (hours 1-23)
+[PASS] no extreme hour-to-hour demand jumps (<= 30% of capacity)
+[PASS] demand_category matches demand / capacity thresholds
+[PASS] demand is not identical across all feeders/scenarios
+[PASS] available supply is always positive
+[PASS] reserve is non-negative
+[PASS] usable_supply = available_supply - reserve
+[PASS] shortage is never negative
+[PASS] shortage = max(0, total_demand - usable_supply)
+[PASS] total_demand_mw equals the sum of the 10 feeder demands
+[PASS] supply_status is consistent with shortage and threshold
+[PASS] supply data contains Sufficient, Tight and Shortage hours
+[PASS] Summer temperatures within 30-42 C
+[PASS] Winter temperatures within 15-28 C
+[PASS] Monsoon temperatures within 25-35 C
+[PASS] humidity within 30%-90%
+[PASS] temperature changes smoothly between hours (<= 3 C)
+[PASS] season, day_type and day_of_week are constant within each scenario
+[PASS] is_weekend matches day_type
+[PASS] day_of_week matches day_type
+[PASS] morning peak flag is hours 6-9
+[PASS] evening peak flag is hours 17-21
+[PASS] is_peak_hour = morning peak OR evening peak
+[PASS] peak/weekend flags are Boolean
+
+Checks passed: 68 / 68
+OVERALL RESULT: ALL VALIDATION CHECKS PASSED
+======================================================================

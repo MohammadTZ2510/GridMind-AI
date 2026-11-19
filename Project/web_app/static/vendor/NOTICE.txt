@@ -1,0 +1,5 @@
+Bundled front-end dependencies (no CDN required at runtime):
+Three.js r128 and OrbitControls: MIT, Copyright three.js authors. https://github.com/mrdoob/three.js/tree/r128
+GSAP 3.12.5: GreenSock standard license, bundled unmodified. https://gsap.com/standard-license/
+Plotly.js 2.35.2: MIT, Copyright Plotly, Inc. https://github.com/plotly/plotly.js/tree/v2.35.2
+Original distribution headers are preserved in each file.

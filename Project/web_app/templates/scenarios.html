@@ -1,0 +1,28 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Scenario Explorer</h1>
+<p>Select any scenario to explore its complete dataset and analysis.</p>
+
+<div class="scenario-grid">
+
+    {% for scenario in scenario_ids %}
+
+    <a href="{{ url_for('scenario_detail', scenario_id=scenario) }}"
+       class="scenario-card">
+
+        <span>SIMULATED SCENARIO</span>
+
+        <h2>{{ scenario }}</h2>
+
+        <p>Explore Scenario →</p>
+
+    </a>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+test_08_area_fairness_forecast_metrics_and_comparison (test_web_app.TestWebApplication.test_08_area_fairness_forecast_metrics_and_comparison) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 4.097s
+
+OK
+
+GRIDMIND verified 0 scenario-hour-method API contexts in 4.10s; input/output hashes unchanged.

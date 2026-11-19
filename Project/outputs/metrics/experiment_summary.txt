@@ -1,0 +1,54 @@
+==============================================================================
+ EXPERIMENT SUMMARY - AI-Based Electricity Demand Prediction and Fair Load-Shedding
+==============================================================================
+
+*** ALL DATA IS SIMULATED DATA - NOT real utility measurements. ***
+
+Generated on : 2026-11-16 20:40:11
+Random seed  : 42
+Scenarios    : 50   (areas: 5, feeders: 10, hours: 24)
+Planning demand: forecast column 'regression_prediction_mw' (scenario-grouped out-of-fold predictions)
+
+------------------------------------------------------------------------------
+ 1. DEMAND FORECASTING (all 50 scenarios, out-of-fold, MW)
+------------------------------------------------------------------------------
+Previous-hour baseline       MAE =   1.175   RMSE =   1.588
+Mean-demand baseline         MAE =   3.451   RMSE =   4.411
+Regression (RandomForest)    MAE =   0.402   RMSE =   0.566
+Regression MAE is 65.8% lower than the previous-hour baseline and 88.4% lower than the mean-demand baseline.
+
+------------------------------------------------------------------------------
+ 2. FEASIBILITY OF THE CSP SCHEDULER
+------------------------------------------------------------------------------
+Feasible scenarios (valid schedule found) : 49 of 50
+Infeasible scenarios (proven)             : 1
+Unresolved scenarios (search limit)       : 0
+  - S002 [INFEASIBLE, supply]: Hour 13: forecast demand exceeds usable supply by 42.04 MW, but only 38.69 MW of demand may be switched off (hospital/protected/no-outage feeders must stay ON). Supply is too low.
+
+------------------------------------------------------------------------------
+ 3. CSP vs HILL CLIMBING (same 49 feasible scenarios; mean +/- std)
+------------------------------------------------------------------------------
+Runtime (s)                                          CSP    0.3886 +/-  1.9256 | HC    0.1446 +/-  0.0933 | HC better/equal/worse: 3/0/46
+Runtime incl. CSP start (s)                          CSP    0.3886 +/-  1.9256 | HC    0.5332 +/-  1.9091 | HC better/equal/worse: 0/0/49
+Total unmet demand (MWh/day, actual)                 CSP  251.8027 +/- 165.2209 | HC  229.7577 +/- 156.0091 | HC better/equal/worse: 40/7/2
+Mean unmet demand per hour (MW)                      CSP   10.4918 +/-  6.8842 | HC    9.5732 +/-  6.5004 | HC better/equal/worse: 40/7/2
+Over-shedding beyond network shortage (MWh/day)      CSP   60.9996 +/- 40.1632 | HC   38.9545 +/- 30.2060 | HC better/equal/worse: 40/7/2
+Outage-hour imbalance between areas (std, hours)     CSP    0.2571 +/-  0.1012 | HC    0.1733 +/-  0.1057 | HC better/equal/worse: 24/24/1
+Total feeder outage hours per day                    CSP   17.7551 +/- 11.3902 | HC   17.3673 +/- 11.2390 | HC better/equal/worse: 15/34/0
+Hours with actual served demand > usable supply      CSP    0.8776 +/-  1.0229 | HC    1.6122 +/-  1.3220 | HC better/equal/worse: 3/22/24
+Hard-constraint violations (planning demand)         CSP    0.0000 +/-  0.0000 | HC    0.0000 +/-  0.0000 | HC better/equal/worse: 0/49/0
+Objective score (planning demand)                    CSP    0.0588 +/-  0.0301 | HC    0.0504 +/-  0.0284 | HC better/equal/worse: 42/7/0
+
+Interpretation (computed from the results above):
+  * Hill Climbing changed mean unmet demand from 251.8 to 229.8 MWh/day (lower in 40 of 49 scenarios).
+  * It changed the mean outage-hour imbalance from 0.257 to 0.173 hours (fairer in 24, equal in 24, less fair in 1).
+  * Hill Climbing is a local search: it stops at a local optimum and is not claimed to be globally optimal.
+  * Median runtime: CSP 18.2 ms, Hill Climbing improvement step 159.0 ms. The CSP mean is raised by a few tight scenarios (slowest: S008, 12.50 s, 222621 search nodes).
+  * Hard-constraint violations in all returned schedules (planning demand): 0.
+  * Because plans use FORECAST demand, the actual demand exceeded usable supply in 0.88 (CSP) / 1.61 (HC) hours per scenario on average.
+
+Data validation: all 47 checks passed. Existing CSV files were read only.
+
+Fairness definition: area outage hours = mean outage hours of the area's sheddable feeders; imbalance = standard deviation of the 5 area values (0 = perfectly equal).
+Unmet demand = demand of feeders that are OFF; network shortage = max(0, demand - usable supply).
+==============================================================================
